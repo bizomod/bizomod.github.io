@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sintoma Vital</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4faef;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    /* Splash screen */
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f4faef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    #splash img {
+      width: 250px;
+      animation: fadeInOut 2s forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: scale(0.8);}
+      50% { opacity: 1; transform: scale(1);}
+      100% { opacity: 0; transform: scale(1.2);}
+    }
+
+    .container {
+      width: 90%;
+      max-width: 500px;
+      background-color: #f6ffe8;
+      border-radius: 20px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
+      padding: 20px;
+      margin-top: 30px;
+      text-align: center;
+      display: none; /* começa escondido */
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #2c4229;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 14px;
+    }
+
+    .divider {
+      height: 2px;
+      background-color: #2c4229;
+      margin: 20px 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #2c4229;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    li {
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    li::before {
+      content: "• ";
+      color: #2c4229;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Splash screen -->
+  <div id="splash">
+    <img src="icon.jpg" alt="Sintoma Vital">
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="container" id="main-container">
+    <h1>O que você está sentindo hoje?</h1>
+    
+    <div class="search-box">
+      <input type="text" id="sintoma" placeholder="Ex: dor de cabeça">
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Sugestões</h2>
+    <ul id="sugestoes"></ul>
+  </div>
+
+  <script>
+    // Splash screen
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("splash").style.opacity = "0";
+        setTimeout(() => {
+          document.getElementById("splash").style.display = "none";
+          document.getElementById("main-container").style.display = "block";
+        }, 500);
+      }, 2000); // 2 segundos de splash
+    });
+
+    // Sistema de sugestões
+    const remedios = {
+      "dor de cabeça": [
+        "Água + limão → hidrata e repõe minerais, combatendo a desidratação que causa dor de cabeça.",
+        "Chá de gengibre + mel → ação anti-inflamatória, pode reduzir sintomas de enxaqueca.",
+        "Chá de camomila + gotas de limão → calmante natural, bom para dores ligadas ao estresse.",
+        "Suco de melancia + hortelã → hidrata e melhora a circulação, hortelã refrescante."
+      ],
+      "dor de barriga": [
+        "Chá de boldo → ajuda na digestão e alivia desconfortos estomacais.",
+        "Chá de camomila → acalma o estômago e reduz cólicas.",
+        "Água morna + limão → melhora o funcionamento digestivo."
+      ],
+      "insônia": [
+        "Chá de camomila → relaxante natural, ajuda a pegar no sono.",
+        "Chá de erva-doce → acalma o corpo e reduz ansiedade.",
+        "Leite morno → favorece a produção de melatonina."
+      ]
+    };
+
+    document.getElementById("sintoma").addEventListener("keyup", function(e) {
+      if (e.key === "Enter") {
+        buscar();
+      }
+    });
+
+    function buscar() {
+      const sintoma = document.getElementById("sintoma").value.toLowerCase();
+      const lista = document.getElementById("sugestoes");
+      lista.innerHTML = "";
+
+      if (remedios[sintoma]) {
+        remedios[sintoma].forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          lista.appendChild(li);
+        });
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "Desculpe, não tenho sugestões para esse sintoma.";
+        lista.appendChild(li);
+      }
+    }
+  </script>
+
+</body>
+</html>
